@@ -4,6 +4,8 @@ slurm-*.out
 *.hst
 core.*
 /CODE_DIR/athena_publ/
+log
+.tab
 
 #C++ standard
 # Prerequisites
