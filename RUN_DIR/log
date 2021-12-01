@@ -1,0 +1,480 @@
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+[init_cond]: dt,t,e,mu,f,u,r = 0.01 0 0 0.5 0 0 1 
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
+### FATAL ERROR in EnrollUserBoundaryFunction
+The boundary condition flag must be set to the string 'user' in the  <mesh> block in the input file to use user-enrolled BCs
+
