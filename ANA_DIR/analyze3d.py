@@ -74,15 +74,16 @@ class data:
         self.v2 = np.array([v for v in self.v2])
         self.v3 = np.array([v for v in self.v3])
             
-    def plot(self, simdata, fname, lab="", height = []):
-        if not height:
-            height = np.array([np.min(simdata), np.max(simdata)])
-        #mean = np.mean(simdata)
+    def plot(self, simdata, fname, lab="", low=None, hig=None):
+        if not low:
+            low = np.min(simdata)
+        if not hig:
+            hig = np.max(simdata)
         for filename, data in zip(self.prim_files, simdata):
             #mean = np.mean(data)
             path = os.path.join(os.getcwd(), 'plots/'+ filename.replace(".athdf", fname))
             
-            reduced = block_reduce(data, block_size=(4, 4, 4), func=np.mean)
+            reduced = block_reduce(data, block_size=(8, 8, 8), func=np.mean)
             
             X, Y, Z = np.mgrid[-10:10:64j, -10:10:64j, -5:5:32j]
 
@@ -91,7 +92,7 @@ class data:
                 y=Y.flatten(),
                 z=Z.flatten(),
                 value=reduced.flatten(),
-                isomin=1e-14,
+                isomin=low,
                 #isomax=1e-11,
                 opacity=0.3, # needs to be small to see through all surfaces
                 surface_count=15, # needs to be a large number for good volume rendering
@@ -119,19 +120,26 @@ class data:
         self.vr   = self.v1*np.cos(self.phi) + self.v2*np.sin(self.phi)
         self.vphi = -self.v1*np.sin(self.phi) + self.v2*np.cos(self.phi)
     
-    def column_dens(self, scale):
+    def column_dens(self, scale, low=None, hig=None):
         frame = self.u.abin * 10
         lim = self.u.abin * 10.*scale
         for filename, data in zip(self.prim_files, self.rho):
-            column = block_reduce(data, block_size=(1, 1, 128), func=np.mean)[:,:,0]
+            column = block_reduce(data, block_size=(1, 1, 128*2), func=np.mean)[:,:,0]
             print(np.shape(column))
-            height = np.array([np.min(column), np.max(column)])
+            if not low:
+                lo = np.min(column)
+            else:
+                lo = low
+            if not hig:
+                hi = np.max(column)
+            else:
+                hi = hig
             
             path = os.path.join(os.getcwd(), 'plots/column/'+ filename.replace(".athdf", "_rho.png"))
             fig = plt.figure(figsize=(10,10))
             cmap="plasma"
             ax = fig.add_subplot(111)
-            pos = ax.imshow(column, cmap=cmap, vmin=height[0], vmax=height[1], origin='lower', \
+            pos = ax.imshow(column, cmap=cmap, vmin=lo, vmax=hi, origin='lower', \
                             extent=[-frame,frame,-frame,frame])
             fig.colorbar(pos, ax=ax, label="$\Sigma ~[g/cm^3]$")
 
@@ -145,19 +153,26 @@ class data:
             plt.close()
             print(filename)
             
-    def column_temp(self, scale):
+    def column_temp(self, scale, low=None, hig=None):
         frame = self.u.abin * 10
         lim = self.u.abin * 10.*scale
         for filename, data in zip(self.prim_files, self.temp):
-            column = block_reduce(data, block_size=(1, 1, 128), func=np.max)[:,:,0]
+            column = block_reduce(data, block_size=(1, 1, 128*2), func=np.max)[:,:,0]
             print(np.shape(column))
-            height = np.array([np.min(column), np.max(column)])
+            if not low:
+                lo = np.min(column)
+            else:
+                lo = low
+            if not hig:
+                hi = np.max(column)
+            else:
+                hi = hig
             
             path = os.path.join(os.getcwd(), 'plots/column/'+ filename.replace(".athdf", "_temp.png"))
             fig = plt.figure(figsize=(10,10))
             cmap="plasma"
             ax = fig.add_subplot(111)
-            pos = ax.imshow(column, cmap=cmap, vmin=height[0], vmax=height[1], origin='lower', \
+            pos = ax.imshow(column, cmap=cmap, vmin=lo, vmax=hi, origin='lower', \
                             extent=[-frame,frame,-frame,frame])
             fig.colorbar(pos, ax=ax, label="$T ~[K]$")
 
