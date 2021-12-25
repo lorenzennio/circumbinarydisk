@@ -14,7 +14,7 @@ mylog.setLevel(40)
 
 class data:
     """
-    Class to load, analyse and plot HDF5 data
+    Class to load, analyse and plot HDF5 data for 3D simulations
     """
     def __init__(self, prim_files, units):
         self.prim_files = prim_files
@@ -69,6 +69,7 @@ class data:
         
     def tonp(self):
         self.rho = np.array([r for r in self.rho])
+        self.press = np.array([r for r in self.press])
         self.v = np.array([v for v in self.v])
         self.v1 = np.array([v for v in self.v1])
         self.v2 = np.array([v for v in self.v2])

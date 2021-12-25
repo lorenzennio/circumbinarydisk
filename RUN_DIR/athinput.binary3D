@@ -9,12 +9,12 @@ problem_id  = cbd      # problem ID: basename of output filenames
 <output1>
 file_type   = hdf5       # VTK data dump
 variable    = prim       #
-dt          = 0.682e1 #3.0764e1   #0.628e1    #0.31415926 #0.62831852 #6.28     # time increment between outputs
+dt          = 3.0764e1   #0.628e1    #0.31415926 #0.62831852 #6.28     # time increment between outputs
 
 <output2>
 data_format = %14.7e
 file_type   = hst       # History data dump
-dt          = 0.682 #3.0764e2  #0.628   # time increment between outputs
+dt          = 3.0764e2  #0.628   # time increment between outputs
 
 #<output3> #Temperature output
 #file_type   = hdf5
@@ -24,7 +24,7 @@ dt          = 0.682 #3.0764e2  #0.628   # time increment between outputs
 <time>
 cfl_number  = 0.4       # The Courant, Friedrichs, & Lewy (CFL) Number
 nlim        = -1        # cycle limit
-tlim        = 0.628e3  #3.0764e4  #0.628e2     #12.56e3   #6.28e2      $62.8      # time limit
+tlim        = 3.0764e4  #0.628e2     #12.56e3   #6.28e2      $62.8      # time limit
 
 <mesh>
 nx1         = 256            # Number of zones in X1-direction
@@ -89,10 +89,10 @@ nx2 = 32
 nx3 = 16 
 
 <refinement1>
-x1min = -2.5
-x1max = 2.5
-x2min = -2.5
-x2max = 2.5
-x3min = -1
-x3max = 1
-level = 1
+x1min = -5.
+x1max = 5.
+x2min = -5.
+x2max = 5.
+x3min = -2.
+x3max = 2.
+level = 2

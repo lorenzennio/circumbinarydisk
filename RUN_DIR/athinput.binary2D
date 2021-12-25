@@ -89,8 +89,8 @@ nx2 = 32
 nx3 = 1 
 
 <refinement1>
-x1min = -2.5
-x1max = 2.5
-x2min = -2.5
-x2max = 2.5
-level = 1
+x1min = -5
+x1max = 5
+x2min = -5
+x2max = 5
+level = 2
