@@ -14,10 +14,16 @@ mylog.setLevel(40)
 
 class load:
     """
-    define variables, units and coordinates
+    define variables and read in the data from the athena++ simulation output
+    
+    prim_files  = files with primitive data from athena++
+    units       = units class instance
+    level       = refinement level
+    dims        = dimensions (2/3)
     """
     
-    def __init__(self, prim_files, units, dims, level):
+    def __init__(self, prim_files, units, level, dims):
+        print("Initializing data readin")
         self.prim_files = prim_files
         self.u = units
 
@@ -34,7 +40,7 @@ class load:
         #convert to numpy array
         self.tonp()
 
-        #remove levels form 2d
+        #remove levels from 2d
         if dims==2:
             self.rmlevels()
         elif dims ==3:
@@ -44,58 +50,116 @@ class load:
 
         #compute temperature
         self.temp = self.press/self.u.presref / (self.rho/self.u.densref) * self.u.tempref
+        
+        print("Processed all data")
 
 
 
     def load(self, level):
+        """
+        function to load the data from the hdf5 files into arrays
+        
+        level = number of refinements
+        """
         unit_base= {"length_unit":(self.u.abin,"AU"), "time_unit":(self.u.tbin,"s"), "mass_unit":(self.u.mbin,"Msun")}
         for fprim in self.prim_files:
-            print(fprim)
             ds_prim = yt.load(fprim, units_override = unit_base)
-            # level = number of refinements
-            # dims = total dimensions 2**(refinement level)
+            
             all_data_level_1_prim = ds_prim.covering_grid(level=level, \
-                                            left_edge=ds_prim.domain_left_edge, dims=ds_prim.domain_dimensions*2**level)
+                                            left_edge=ds_prim.domain_left_edge, \
+                                            dims=ds_prim.domain_dimensions*2**level)
+                                            #dims = total dimensions 2**(refinement level)
+
+            
             rho = all_data_level_1_prim["rho"].in_units("g/cm**3").to_ndarray()
             press = all_data_level_1_prim["press"].in_units("g/(cm*s**2)").to_ndarray()
             v1 = all_data_level_1_prim["vel1"].in_units("km/s").to_ndarray()
             v2 = all_data_level_1_prim["vel2"].in_units("km/s").to_ndarray()
             v3 = all_data_level_1_prim["vel3"].in_units("km/s").to_ndarray()
+            
             self.rho.append(rho)
             self.press.append(press)
             self.v1.append(v1)
             self.v2.append(v2)
             self.v3.append(v3) 
+            
+            print("Read " + fprim)
+            
 
     def tonp(self):
-        #self.rho = np.array([r for r in self.rho])
-        self.rho = np.array([self.rho])
-        self.press = np.array([self.press])
-        self.v1 = np.array([self.v1])
-        self.v2 = np.array([self.v2])
-        self.v3 = np.array([self.v3])
+        """
+        function to convert to numpy arrays
+        """
+        self.rho = np.array(self.rho)
+        self.press = np.array(self.press)
+        self.v1 = np.array(self.v1)
+        self.v2 = np.array(self.v2)
+        self.v3 = np.array(self.v3)
 
     def rmlevels(self):
+        """
+        function to remove the outer refinement levels form the read data
+        """
         self.rho = self.rho[:,:,:,0]
         self.press = self.press[:,:,:,0]
         self.v1 = self.v1[:,:,:,0]
         self.v2 = self.v2[:,:,:,0]
         self.v3 = self.v3[:,:,:,0]
             
-#----------------------------------------------------------------              
-class polarcoords:
-    def __init__(self, dims):
-        pass
-                
-#----------------------------------------------------------------       
+#----------------------------------------------------------------
+
+class cartesian:
+    """
+    class to define cartesian, cylindrical and polar coordinates on a meshgrid with the same size as the input data
+    """
+    def __init__(self, mesh, codelength):
+        print("cartesian")
+        #cartesian
+        xylen = len(mesh)
+        self.x = np.array([[i-(xylen-1)/2 for i in range(xylen)] for j in range(xylen)])
+        self.x *= (2*codelength/xylen)
+        self.y = -self.x.T
+        
+        #3d - TODO
+        if len(mesh.shape)==3:
+            zlen = len(mesh[0,0])
+            self.z = np.array([[i-(zlen-1)/2 for i in range(zlen)] for j in range(zlen)])
+            self.z *= (2*codelength/xylen)
+
+class cylindrical(cartesian):
+    """
+    class to define 2d cylidrical polar coordinates on a meshgrid with the same size as the input data
+    """
+    def __init__(self, mesh, codelength):
+        super().__init__(mesh, codelength)
+        self.r = np.sqrt(self.x**2+self.y**2)
+        self.phi = np.arctan2(self.y,self.x)
+
+        
+class spherical(cylindrical):
+    """
+    class to define 3d spherical polar coordinates on a meshgrid with the same size as the input data
+    """
+    def __init__(self, mesh, codelength):
+        super().__init__(mesh, codelength)
+
+class coordinates(spherical, cylindrical, cartesian):
+    def __init__(self, mesh, codelength):
+        super().__init__(mesh, codelength)
+#----------------------------------------------------------------
+
 class plot:
+    """
+    class for specific plotting routines
+    """
+    
     def plot(self, data, path, low, hig, frame, lab, lim):
         cmap="plasma"
         
         fig = plt.figure(figsize=(10,10))
         ax = fig.add_subplot(111)
-        pos = ax.imshow(data, cmap=cmap, vmin=low, vmax=hig, origin='lower', \
-                        extent=[-frame,frame,-frame,frame])
+        
+        pos = ax.imshow(data, cmap=cmap, vmin=low, vmax=hig, origin='lower', extent=[-frame,frame,-frame,frame])
         fig.colorbar(pos, ax=ax, label=lab)
 
         ax.set_aspect('equal', 'box')
@@ -110,6 +174,13 @@ class plot:
 #----------------------------------------------------------------  
 
 class data2d(load, plot):
+    """
+    class for 2d specific data and plotting methods
+    """
+    
+    def __init__(self, prim_files, units, level):
+        dims = 2
+        super().__init__(prim_files, units, level, dims)
     
     def polar_vel(self):
         #decompose velocity in radial and azimuthal parts
@@ -128,40 +199,45 @@ class data2d(load, plot):
     def draw(self, simdata, fname, lab="", scale = 1., low=None, hig=None):
         frame = self.u.abin * 10.
         lim = frame*scale
-        cmap="plasma"
         for filename, data in zip(self.prim_files, simdata):
-            
             path = os.path.join(os.getcwd(), 'plots/'+ filename.replace(".athdf", fname))
             
             if not low:
-                lo = np.min(column)
+                lo = np.min(data)
             else:
                 lo = low
             if not hig:
-                hi = np.max(column)
+                hi = np.max(data)
             else:
                 hi = hig
             
-            self.plot(self, data, path, lo, hi, frame, lab, lim)
-            print(filename)
+            self.plot(data, path, lo, hi, frame, lab, lim)
+            
+            print("Drew " + filename)
+            
+#----------------------------------------------------------------  
     
 class data3d(load, plot):
+    """
+    class for 3d specific data and plotting methods
+    """
+    def __init__(self, prim_files, units, level):
+        dims = 3
+        super().__init__(prim_files, units, level, dims)
+    
     
     def polar_vel(self):
-        #decompose velocity in radial and azimuthal parts
+        """
+        decompose velocity in radial and azimuthal parts
         
-        #compute polar angle on mesh
-        l = np.shape(self.phi)[0]
-        X = np.array([[i-l/2+1./2 for i in range(l)] for j in range(l)])
-        Y = X.T
-        
-        self.phi = np.arctan2(Y,X)
-        
-        #compute polar velocity
-        self.vr   = self.v1*np.cos(self.phi) + self.v2*np.sin(self.phi)
-        self.vphi = -self.v1*np.sin(self.phi) + self.v2*np.cos(self.phi)
+        TODO
+        """
+        pass
         
     def plot3d(self, simdata, fname, lab="", low=None, hig=None):
+        """
+        function to plot the data in 3d
+        """
         if not low:
             low = np.min(simdata)
         if not hig:
@@ -171,7 +247,7 @@ class data3d(load, plot):
             #mean = np.mean(data)
             path = os.path.join(os.getcwd(), 'plots/'+ filename.replace(".athdf", fname))
             
-            blocksize = np.shape(data)[0] / 64
+            blocksize = int(np.shape(data)[0] / 64)
             reduced = block_reduce(data, block_size=(blocksize, blocksize, blocksize), func=np.mean)
             
             X, Y, Z = np.mgrid[-10:10:64j, -10:10:64j, -5:5:32j]
@@ -196,16 +272,18 @@ class data3d(load, plot):
             fig.write_image(path)
             print(filename)
         
-    def column_dens(self, simdata, fname, scale, low=None, hig=None):
+    def column(self, simdata, function, fname, lab="", scale = 1., low=None, hig=None):
+        """
+        function to plot the top view colums of the data
+        """
         frame = self.u.abin*10.
         lim = frame*scale
         
-        for filename, data in zip(self.prim_files, self.rho):
+        for filename, data in zip(self.prim_files, simdata):
             path = os.path.join(os.getcwd(), 'plots/column/'+ filename.replace(".athdf", fname))
             
             zcolumn = np.shape(data)[-1]
-            column = block_reduce(data, block_size=(1, 1, zcolumn), func=np.mean)[:,:,0]
-            print(np.shape(column))
+            column = block_reduce(data, block_size=(1, 1, zcolumn), func=function)[:,:,0]
             
             if not low:
                 lo = np.min(column)
@@ -216,42 +294,6 @@ class data3d(load, plot):
             else:
                 hi = hig
             
-            self.plot(self, data, path, lo, hi, frame, lab, lim)
+            self.plot(column, path, lo, hi, frame, lab, lim)
             
-            print(filename)
-            
-    def column_temp(self, scale, low=None, hig=None):
-        frame = self.u.abin * 10
-        lim = self.u.abin * 10.*scale
-        for filename, data in zip(self.prim_files, self.temp):
-            column = block_reduce(data, block_size=(1, 1, 128*2), func=np.max)[:,:,0]
-            print(np.shape(column))
-            if not low:
-                lo = np.min(column)
-            else:
-                lo = low
-            if not hig:
-                hi = np.max(column)
-            else:
-                hi = hig
-            
-            path = os.path.join(os.getcwd(), 'plots/column/'+ filename.replace(".athdf", "_temp.png"))
-            fig = plt.figure(figsize=(10,10))
-            cmap="plasma"
-            ax = fig.add_subplot(111)
-            pos = ax.imshow(column, cmap=cmap, vmin=lo, vmax=hi, origin='lower', \
-                            extent=[-frame,frame,-frame,frame])
-            fig.colorbar(pos, ax=ax, label="$T ~[K]$")
-
-            ax.set_aspect('equal', 'box')
-            ax.set_xlabel("$x_0~[AU]$")
-            ax.set_ylabel("$x_1~[AU]$")
-            ax.set_xlim(-lim, lim)
-            ax.set_ylim(-lim, lim)
-
-            plt.savefig(path)
-            plt.close()
-            print(filename)
-    
-
-#----------------------------------------------------------------              
+            print("Drew " + filename)
