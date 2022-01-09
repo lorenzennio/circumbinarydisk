@@ -51,6 +51,10 @@ class load:
         #compute temperature
         self.temp = self.press/self.u.presref / (self.rho/self.u.densref) * self.u.tempref
         
+        #compute velocity magnitude
+        self.v = np.sqrt(self.v1**2 + self.v2**2 + self.v2**2)
+
+        
         print("Processed all data")
 
 
@@ -113,7 +117,6 @@ class cartesian:
     class to define cartesian, cylindrical and polar coordinates on a meshgrid with the same size as the input data
     """
     def __init__(self, mesh, codelength):
-        print("cartesian")
         #cartesian
         xylen = len(mesh)
         self.x = np.array([[i-(xylen-1)/2 for i in range(xylen)] for j in range(xylen)])
@@ -153,6 +156,7 @@ class plot:
     class for specific plotting routines
     """
     
+    
     def plot(self, data, path, low, hig, frame, lab, lim):
         cmap="plasma"
         
@@ -160,6 +164,27 @@ class plot:
         ax = fig.add_subplot(111)
         
         pos = ax.imshow(data, cmap=cmap, vmin=low, vmax=hig, origin='lower', extent=[-frame,frame,-frame,frame])
+        fig.colorbar(pos, ax=ax, label=lab)
+
+        ax.set_aspect('equal', 'box')
+        ax.set_xlabel("$x_0~[AU]$")
+        ax.set_ylabel("$x_1~[AU]$")
+        ax.set_xlim(-lim, lim)
+        ax.set_ylim(-lim, lim)
+
+        plt.savefig(path)
+        plt.close()
+        
+    def fieldlines(self, coord, vx, vy, v, path, frame, lab, lim, step):
+        cmap="plasma"
+        lab = "$v~[km/s]$"
+
+        fig = plt.figure(figsize=(10,10))
+        ax = fig.add_subplot(111)
+        
+        pos = ax.quiver(coord.x[::step, ::step],coord.y[::step, ::step],\
+                  vx[::step, ::step], vy[::step, ::step], v[::step, ::step],\
+                 cmap=cmap)
         fig.colorbar(pos, ax=ax, label=lab)
 
         ax.set_aspect('equal', 'box')
@@ -182,7 +207,7 @@ class data2d(load, plot):
         dims = 2
         super().__init__(prim_files, units, level, dims)
     
-    def polar_vel(self):
+    def polarvel(self):
         #decompose velocity in radial and azimuthal parts
         
         #compute polar angle on mesh
@@ -213,8 +238,20 @@ class data2d(load, plot):
             
             self.plot(data, path, lo, hi, frame, lab, lim)
             
-            print("Drew " + filename)
+            print("Drew - " + filename)
             
+    def vectorfield(self, fname, lab="$v~[km/s]$", scale = 1., step=10):
+        frame = self.u.abin * 10.
+        lim = frame*scale
+        
+        coord = coordinates(self.v[0], frame)
+
+        for filename, vx, vy, v in zip(self.prim_files, self.v1, self.v2, self.v):
+            path = os.path.join(os.getcwd(), 'plots/'+ filename.replace(".athdf", fname))
+            
+            self.fieldlines(coord, vx, vy, v, path, frame, lab, lim, step)
+            
+            print("Drew field lines - " + filename)
 #----------------------------------------------------------------  
     
 class data3d(load, plot):
@@ -297,3 +334,29 @@ class data3d(load, plot):
             self.plot(column, path, lo, hi, frame, lab, lim)
             
             print("Drew " + filename)
+            
+#----------------------------------------------------------------  
+
+def masses(dens, rmin=0, rmax=np.inf):
+    """
+    compute masses within radius for 2d simulations
+    """
+    masses = np.array([])
+    
+    xyl = len(dens[0])
+    coords = cylindrical(dens[0], 10)
+    rflat = coords.r.flatten()
+    
+    dx = 2*10./xyl * 50.*const.au.to('cm').value
+    dy = 2*10./xyl * 50.*const.au.to('cm').value
+    dz = 2*0.5 * 2.*const.au.to('cm').value
+    
+    for d in dens:
+        m=0
+        dflat = d.flatten()
+        for rf, df in zip(rflat, dflat):
+            if rf >= rmin and rf <= rmax:
+                m+=df
+        m *= dx*dy*dz
+        masses = np.append(masses, m)
+    return masses

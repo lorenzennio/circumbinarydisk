@@ -43,8 +43,8 @@ ox2_bc      = outflow        # Outer-X2 boundary condition flag
 nx3         = 128            # Number of zones in X3-direction
 x3min       = -5             # minimum value of X3
 x3max       = 5              # maximum value of X3
-ix3_bc      = outflow #user           # Inner-X3 boundary condition flag
-ox3_bc      = outflow #user           # Outer-X3 boundary condition flag
+ix3_bc      = user           # Inner-X3 boundary condition flag
+ox3_bc      = user           # Outer-X3 boundary condition flag
 
 refinement  = static
 
