@@ -7,6 +7,7 @@ import units as un
 from astropy import constants as const
 from skimage.measure import block_reduce
 import plotly.graph_objects as go
+import cv2
 
 import yt
 from yt.funcs import mylog
@@ -195,6 +196,24 @@ class plot:
 
         plt.savefig(path)
         plt.close()
+        
+    def video(self):
+        #VIDEO
+        images = []
+        os.chdir("plots")
+        files = np.sort([f for f in os.listdir(os.getcwd()) if f.endswith("rho.png")])
+        for f in files:
+            images.append(cv2.imread(f))
+        height,width,layers=np.shape(images[1])
+        fourcc = cv2.VideoWriter_fourcc(*"XVID")
+        #fourcc = cv2.VideoWriter_fourcc(*'DIVX')
+        video=cv2.VideoWriter('evolution.avi',fourcc, 5,(width,height), True)
+        for i in images:
+            video.write(i)
+        cv2.destroyAllWindows()
+        video.release()
+        os.chdir("..")
+        print("Created video.")
 
 #----------------------------------------------------------------  
 
@@ -307,7 +326,7 @@ class data3d(load, plot):
             #))
 
             fig.write_image(path)
-            print(filename)
+            print("Drew 3d: " + filename)
         
     def column(self, simdata, function, fname, lab="", scale = 1., low=None, hig=None):
         """

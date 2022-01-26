@@ -6,6 +6,7 @@ core.*
 /CODE_DIR/athena_publ/
 log
 .tab
+.png
 
 #C++ standard
 # Prerequisites
