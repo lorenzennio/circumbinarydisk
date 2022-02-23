@@ -197,12 +197,12 @@ class plot:
         plt.savefig(path)
         plt.close()
         
-    def video(self):
+    def video(self, path):
         #VIDEO
         images = []
-        os.chdir("plots")
+        os.chdir(path)
         files = np.sort([f for f in os.listdir(os.getcwd()) if f.endswith("rho.png")])
-        for f in files:
+        for f in files[:1000]:
             images.append(cv2.imread(f))
         height,width,layers=np.shape(images[1])
         fourcc = cv2.VideoWriter_fourcc(*"XVID")
@@ -339,7 +339,7 @@ class data3d(load, plot):
             path = os.path.join(os.getcwd(), 'plots/column/'+ filename.replace(".athdf", fname))
             
             zcolumn = np.shape(data)[-1]
-            column = block_reduce(data, block_size=(1, 1, zcolumn), func=function)[:,:,0]
+            column = np.log(block_reduce(data, block_size=(1, 1, zcolumn), func=function)[:,:,0])
             
             if not low:
                 lo = np.min(column)
