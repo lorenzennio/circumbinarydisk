@@ -14,7 +14,7 @@ dt          = 0.62832    #0.31415926 #0.62831852 #6.28     # time increment betw
 <output2>
 data_format = %14.7e
 file_type   = hst       # History data dump
-dt          = 0.62832e2   # time increment between outputs
+dt          = 0.62832  # time increment between outputs
 
 #<output3> #Temperature output
 #file_type   = hdf5
