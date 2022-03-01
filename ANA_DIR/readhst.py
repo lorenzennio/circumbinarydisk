@@ -14,6 +14,7 @@ class readhst:
     def __init__(self, file):
         self.keys = self.genkeys(file)
         self.data = dict(zip(self.keys, np.genfromtxt(file).T))
+        self.orbits()
         self.accperorbit()
         
     def genkeys(self, file):
@@ -27,6 +28,13 @@ class readhst:
         keys = np.array(l.split(" "))[:-1]
         return keys
     
+    def orbits(self):
+        self.data["orbits"] = self.data["time"]/0.62832
+    
     def accperorbit(self):
         self.data["accm1_orbit"] = np.array([j - i for i, j in zip(self.data["accm1"][:-1], self.data["accm1"][1:])])
         self.data["accm2_orbit"] = np.array([j - i for i, j in zip(self.data["accm2"][:-1], self.data["accm2"][1:])])
+        
+    def years(self, period):
+        self.data["years"] = self.data["orbits"]*period/31557600
+        
