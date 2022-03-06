@@ -4,6 +4,7 @@ slurm-*.out
 *.hst
 core.*
 /CODE_DIR/athena_publ/
+log
 *.tab
 *.png
 *.vtk
