@@ -11,5 +11,7 @@
 #the type of notes that you are submitting to
 #SBATCH -p ccas128
 
-srun athena -i athinput.binary3D -m 1 outputSMR3Doutflow/ > outputSMR3Doutflow/log
-srun athena -i athinput.binary3D -d outputSMR3Doutflow/ > outputSMR3Doutflow/log
+path=outputSMR3Dacc
+
+srun athena -i athinput.binary3D -m 1 $path > $path/log
+srun athena -i athinput.binary3D -d $path > $path/log

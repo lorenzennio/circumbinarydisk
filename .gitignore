@@ -4,9 +4,10 @@ slurm-*.out
 *.hst
 core.*
 /CODE_DIR/athena_publ/
-log
-.tab
-.png
+*.tab
+*.png
+*.vtk
+*.mp4
 
 #C++ standard
 # Prerequisites
