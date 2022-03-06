@@ -64,7 +64,6 @@ void Binary(MeshBlock *pmb, const Real time, const Real dt,
 
 //user defined hst output
 static Real hst_accm(MeshBlock *pmb, int iout);
-static Real hst_m(MeshBlock *pmb, int iout);
 
 // problem parameters which are useful to make global to this file
 static Real semia,ecc,qrat,mu,incli,argp;
@@ -195,13 +194,10 @@ void Mesh::InitUserMeshData(ParameterInput *pin)
   EnrollUserBoundaryFunction(BoundaryFace::outer_x3, DiodeOuterX3);
 
   //Store accretion rate
-  AllocateUserHistoryOutput(4);
+  AllocateUserHistoryOutput(2);
   EnrollUserHistoryOutput(0, hst_accm, "accm1");
   EnrollUserHistoryOutput(1, hst_accm, "accm2");
 
-  //Store binary mass
-  EnrollUserHistoryOutput(2, hst_m, "m1");
-  EnrollUserHistoryOutput(3, hst_m, "m2");
 
   // debug binary orbit
   pf = fopen ("binary_orbit.tab","w");
@@ -213,11 +209,8 @@ void Mesh::InitUserMeshData(ParameterInput *pin)
 void MeshBlock::InitUserMeshBlockData(ParameterInput *pin)
 {
         //Create memory to store accretion rate
-        AllocateRealUserMeshBlockDataField(4);
+        AllocateRealUserMeshBlockDataField(2);
         ruser_meshblock_data[0].NewAthenaArray(2);
-
-        //Create memory to store binary mass
-        ruser_meshblock_data[1].NewAthenaArray(2);
         return;
 }
 
@@ -427,6 +420,7 @@ static Real SqSoundSpeed(const Real rad, const Real phi, const Real z)
 
 void MeshBlock::UserWorkInLoop(void)
 {
+
   // Clear hist data after previous loop
   if ((ihst1d==1) && (pmy_mesh->time>=hst1d_tstart)) {
     for(int n=0; n<nvar; n++) {
@@ -435,10 +429,6 @@ void MeshBlock::UserWorkInLoop(void)
       for(int i=0; i<ncsd2; i++) ruser_meshblock_data[6](n,i)=0;
     }
   }
-
-  // Clear binary mass hist data after previous loop
-  for(int i=0; i<2;  i++) ruser_meshblock_data[1](i)=0;
-
   // estimate the velocity of the binary needed for calc the hist data
   Real sini = sin(incli);
   Real cosi = cos(incli);
@@ -513,8 +503,6 @@ void MeshBlock::UserWorkInLoop(void)
           Real trm = std::max(dt,tsink*pow(std::min(radp,rads)/rsink, sinkpower));
           // steeper than alpha model
           //Real trm = std::max(dt,tsink*pow(std::min(radp,rads)/rsink, 3.0));
-          //check effect of larger mass removal timescale
-          //trm *= 100;
           u_d -= dt*u_d/trm;
           // apply density floor, without changing momentum or energy
           u_d = (u_d > dfloor) ?  u_d : dfloor;
@@ -528,6 +516,7 @@ void MeshBlock::UserWorkInLoop(void)
           w_vx = u_m1*di;
           w_vy = u_m2*di;
           w_vz = u_m3*di;
+          
           // store the accretion rate
           if ((i<=ie && i>=is) && (j<=je && j>=js) && (k<=ke && k>=ks)){
             Real vol = pcoord->GetCellVolume(k,j,i);
@@ -535,23 +524,11 @@ void MeshBlock::UserWorkInLoop(void)
             Real& accm2 = ruser_meshblock_data[0](1);
             if (radp <= rsink) accm1 += (u_d0-u_d)*vol;
             else accm2 += (u_d0-u_d)*vol;
-          //if (radp <= rsink) accm1 += (u_d0-u_d)*vol/dt;
-          //else accm2 += (u_d0-u_d)*vol/dt;
+            //if (radp <= rsink) accm1 += (u_d0-u_d)*vol/dt;
+            //else accm2 += (u_d0-u_d)*vol/dt;
           }
-        }
-        
-        //store the binary masses
-        if ((radp <= semia/2)||(rads <= semia/2)) {
-          if ((i<=ie && i>=is) && (j<=je && j>=js) && (k<=ke && k>=ks)){
-            Real vol = pcoord->GetCellVolume(k,j,i);
-            Real& m1 = ruser_meshblock_data[1](0);
-            Real& m2 = ruser_meshblock_data[1](1);
-            if (radp <= semia/2) m1 += u_d*vol;
-            if (rads <= semia/2) m2 += u_d*vol;
-          }
-        }
-       
 
+        }
         // apply wave-killing zone within [rbuf1,rbuf2] to quench m=4 mode
         if (rad >= rbuf1) {
           Real v1, v2, v3;
@@ -789,19 +766,18 @@ void Mesh::UserWorkAfterLoop(ParameterInput *pin)
   return;
 }
 
-/*
-void MeshBlock::UserWorkBeforeOutput(ParameterInput *pin)
-{
-  for(int k=ks; k<=ke; k++) {
-    for(int j=js; j<=je; j++) {
-      for(int i=is; i<=ie; i++) {
-        //user_out_var(0,k,j,i) = phydro->w(IPR,k,j,i)/phydro->w(IDN,k,j,i)*my_unit.Temperature;
-        user_out_var(0,k,j,i) = phydro->w(IPR,k,j,i);
-      }
-    }
-  }
-}
-*/
+//void MeshBlock::UserWorkBeforeOutput(ParameterInput *pin)
+//{
+//  for(int k=ks; k<=ke; k++) {
+//   for(int j=js; j<=je; j++) {
+//      for(int i=is; i<=ie; i++) {
+//        //user_out_var(0,k,j,i) = phydro->w(IPR,k,j,i)/phydro->w(IDN,k,j,i)*my_unit.Temperature;
+//        user_out_var(0,k,j,i) = phydro->w(IPR,k,j,i);
+//      }
+//    }
+//  }
+//}
+
 
 //----------------------------------------------------------------------------------------
 //!\fn void compute_star_loc(const Real dto, const Real t, const Real e,
@@ -944,19 +920,10 @@ void Cooling(MeshBlock *pmb, const Real time, const Real dt, const AthenaArray<R
 static Real hst_accm(MeshBlock *pmb, int iout)
 {
         //std::cout <<"gid = "<< pmb->gid << " accm1= " << pmb->accm1 << " accm2= " << pmb->accm2 << std::endl;
-        Real& accm1 = pmb->ruser_meshblock_data[0](0);
-        Real& accm2 = pmb->ruser_meshblock_data[0](1);
-        if (iout == 0) return accm1;
-        else return accm2;
-}
-
-
-static Real hst_m(MeshBlock *pmb, int iout)
-{
-        Real& m1 = pmb->ruser_meshblock_data[1](0);
-        Real& m2 = pmb->ruser_meshblock_data[1](1);
-        if (iout == 2) return m1;
-        else return m2;
+        if (iout == 0) return pmb->ruser_meshblock_data[0](0);
+        else return pmb->ruser_meshblock_data[0](1);
+        //if (iout == 0) return accm1;
+        //else return accm2;
 }
 
 void DiodeInnerX3(MeshBlock *pmb, Coordinates *pco, AthenaArray<Real> &a,

@@ -49,7 +49,6 @@ static void VelProfileCyl(const Real rad, const Real phi, const Real z,
                           Real &v1, Real &v2, Real &v3, const int flag);
 static Real RampFunc(const Real rad, const Real phi, const Real z,
             const Real v1, const Real v2, const Real v3);
-static Real TempProfileCyl(const Real rad, const Real phi, const Real z);
 
 //user defined src term
 void Cooling(MeshBlock *pmb, const Real time, const Real dt,
@@ -224,7 +223,7 @@ void MeshBlock::ProblemGenerator(ParameterInput *pin)
         phydro->u(IEN,k,j,i) = p_over_r*phydro->u(IDN,k,j,i)/(gamma_gas - 1.0);
         phydro->u(IEN,k,j,i) += 0.5*(SQR(phydro->u(IM1,k,j,i))+SQR(phydro->u(IM2,k,j,i))
                                    + SQR(phydro->u(IM3,k,j,i)))/phydro->u(IDN,k,j,i);
-	}
+      }
     }
   }}
 
@@ -266,14 +265,11 @@ static Real PoverR(const Real rad, const Real phi, const Real z)
   //poverr = p0_over_r0*pow(rad/r0, pslope);
   // 2) P/rho = Cs(r,phi,z)^2/gamma
   //          = (h/r)^2*(GM1/r1+GM2/r2)/gamma
-  //Real x1 = rad*cos(phi);
-  //Real x2 = rad*sin(phi);
-  //Real rad1 = sqrt(SQR(x1-x1p)+SQR(x2-x2p)+SQR(z-x3p)+SQR(rsoft));
-  //Real rad2 = sqrt(SQR(x1-x1s)+SQR(x2-x2s)+SQR(z-x3s)+SQR(rsoft));
-  //poverr = p0_over_r0*gm0*(mu/rad1+(1.0-mu)/rad2)/gamma_gas; 
-  
-  //insert temperature contribution
-  poverr = TempProfileCyl(rad, phi, z);
+  Real x1 = rad*cos(phi);
+  Real x2 = rad*sin(phi);
+  Real rad1 = sqrt(SQR(x1-x1p)+SQR(x2-x2p)+SQR(z-x3p)+SQR(rsoft));
+  Real rad2 = sqrt(SQR(x1-x1s)+SQR(x2-x2s)+SQR(z-x3s)+SQR(rsoft));
+  poverr = p0_over_r0*gm0*(mu/rad1+(1.0-mu)/rad2)/gamma_gas;
   return poverr;
 }
 
@@ -328,42 +324,6 @@ static Real RampFunc(const Real rad, const Real phi, const Real z,
   }
   tau = 2.0*PI/sqrt(gm0/rbuf1/SQR(rbuf1));
   return ramp/tau;
-}
-
-//----------------------------------------------------------------------------------------
-//! \f  computes temperature profile
-// [T]=Energy
-//need to fix scale here
-
-static Real TempProfileCyl(const Real rad, const Real phi, const Real z)
-{
-  Real k_B = 1.380658e-16; //cm^2 g s^-2 K^-1
-  Real temp;
-  Real M_sol = 1.98847e33; //g
-  Real AU = 1.495978707e13; //cm
-  Real Mbin = 3.0; //M_sol
-  Real semiabin = 50.0; //AU
-  Real G_N = 6.6743e-8; //cm^3 g^-1 s^-2
-  Real time = sqrt(pow(semiabin*AU,3)/(Mbin*M_sol*G_N));
-  Real densref = Mbin*M_sol/pow(semiabin*AU,3); //g/cm^3
-  Real T0 = 15.0; //K
-
-  Real den0 = DenProfileCyl(rad,phi,z)*exp(-pow((rad/rin),-2.0));
-  den0 = (den0 > dfloor) ?  den0 : dfloor;
-
-  if(den0*densref<10e-12){
-    temp = T0+1.5*10e13*den0*densref;
-  } else if (10e-12 <= den0*densref < 10e-11){
-    temp = (T0+15)*pow(den0*densref*10e12, 0.6);
-  } else if (10e-11 < den0*densref <= 3*10e-9){
-    temp = pow(10,0.6)*(T0+15)*pow(den0*densref*10e11, 0.44);
-  }
-  temp *= k_B;
-  
-  //back to code units
-
-  Real poverr = temp * pow(time,2)/(M_sol*Mbin*semiabin*AU);
-  return poverr;
 }
 
 void MeshBlock::UserWorkInLoop(void)

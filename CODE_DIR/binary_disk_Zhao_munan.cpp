@@ -32,10 +32,10 @@
 
 //user boundary conditions
 static void DiodeInnerX3(MeshBlock *pmb, Coordinates *pco, AthenaArray<Real> &a,
-     FaceField &b, Real time, Real dt, 
+     FaceField &b, Real time, Real dt,
      int il, int iu, int jl, int ju, int kl, int ku, int ngh);
 static void DiodeOuterX3(MeshBlock *pmb, Coordinates *pco, AthenaArray<Real> &a,
-     FaceField &b, Real time, Real dt, 
+     FaceField &b, Real time, Real dt,
      int il, int iu, int jl, int ju, int kl, int ku, int ngh);
 
 void solve_u(const Real t, const Real dto, const Real e, Real *ua);
@@ -45,13 +45,12 @@ void compute_star_loc(const Real dto, const Real t, const Real e,
 
 static void GetCylCoord(Coordinates *pco,Real &rad,Real &phi,Real &z,int i,int j,int k);
 static Real DenProfileCyl(const Real rad, const Real phi, const Real z);
-static Real PoverR(const Real den);
-static void VelProfileCyl(const Real den, const Real rad, const Real phi, const Real z,
+static Real PoverR(const Real rad, const Real phi, const Real z);
+static void VelProfileCyl(const Real rad, const Real phi, const Real z,
                           Real &v1, Real &v2, Real &v3, const int flag);
 static Real RampFunc(const Real rad, const Real phi, const Real z,
             const Real v1, const Real v2, const Real v3);
-static Real TempProfileCyl(const Real den);
-static Real SqSoundSpeed(const Real rad, const Real phi, const Real z);
+static Real TempProfileCyl(const Real rad, const Real phi, const Real z);
 
 //user defined src term
 void Cooling(MeshBlock *pmb, const Real time, const Real dt,
@@ -61,10 +60,8 @@ void Binary(MeshBlock *pmb, const Real time, const Real dt,
             const AthenaArray<Real> &prim, const AthenaArray<Real> &prim_scalar,
             const AthenaArray<Real> &bcc, AthenaArray<Real> &cons,
             AthenaArray<Real> &cons_scalar);
-
 //user defined hst output
-static Real hst_accm(MeshBlock *pmb, int iout);
-static Real hst_m(MeshBlock *pmb, int iout);
+//static Real hst_accm(MeshBlock *pmb, int iout);
 
 // problem parameters which are useful to make global to this file
 static Real semia,ecc,qrat,mu,incli,argp;
@@ -101,7 +98,7 @@ static Real AU = 1.495978707e13; //cm
 static Real muH = 2.3;
 static Real lunit = 50.*AU;
 static Real dunit = muH*Constants::mH;
-static Real vunit = 1.; //Constants::kms;
+static Real vunit = Constants::kms;
 static Units my_unit(dunit, lunit, vunit);
 
 //========================================================================================
@@ -179,10 +176,8 @@ void Mesh::InitUserMeshData(ParameterInput *pin)
   }else{
     p0_over_r0=SQR(pin->GetReal("hydro","iso_sound_speed"));
   }
-  //dfloor=pin->GetOrAddReal("hydro","dfloor",(1024*(FLT_MIN)));
   dfloor=pin->GetOrAddReal("hydro","dfloor",(1024*(FLT_MIN)));
   pfloor=pin->GetOrAddReal("hydro","pfloor",(1024*(FLT_MIN)));
-
   int inu = pin->GetOrAddReal("problem","inu",1);
   if (inu != 0) alpha = pin->GetOrAddReal("problem","nuiso",0.1);
   else          alpha = pin->GetOrAddReal("problem","nuiso",2.5e-4)/p0_over_r0;
@@ -194,14 +189,10 @@ void Mesh::InitUserMeshData(ParameterInput *pin)
   EnrollUserBoundaryFunction(BoundaryFace::inner_x3, DiodeInnerX3);
   EnrollUserBoundaryFunction(BoundaryFace::outer_x3, DiodeOuterX3);
 
-  //Store accretion rate
-  AllocateUserHistoryOutput(4);
-  EnrollUserHistoryOutput(0, hst_accm, "accm1");
-  EnrollUserHistoryOutput(1, hst_accm, "accm2");
+//  AllocateUserHistoryOutput(2);
+//  EnrollUserHistoryOutput(0, hst_accm, "accm1");
+//  EnrollUserHistoryOutput(1, hst_accm, "accm2");
 
-  //Store binary mass
-  EnrollUserHistoryOutput(2, hst_m, "m1");
-  EnrollUserHistoryOutput(3, hst_m, "m2");
 
   // debug binary orbit
   pf = fopen ("binary_orbit.tab","w");
@@ -212,12 +203,7 @@ void Mesh::InitUserMeshData(ParameterInput *pin)
 
 void MeshBlock::InitUserMeshBlockData(ParameterInput *pin)
 {
-        //Create memory to store accretion rate
-        AllocateRealUserMeshBlockDataField(4);
-        ruser_meshblock_data[0].NewAthenaArray(2);
-
-        //Create memory to store binary mass
-        ruser_meshblock_data[1].NewAthenaArray(2);
+        AllocateUserOutputVariables(1);
         return;
 }
 
@@ -246,23 +232,19 @@ void MeshBlock::ProblemGenerator(ParameterInput *pin)
       Real den0 = DenProfileCyl(rad,phi,z)*exp(-pow((rad/rin),-2.0));
       den0 = (den0 > dfloor) ?  den0 : dfloor;
       phydro->u(IDN,k,j,i) = den0;
-      
-      VelProfileCyl(den0, rad,phi,z,v1,v2,v3,1);
-      
+      VelProfileCyl(rad,phi,z,v1,v2,v3,1);
       phydro->u(IM1,k,j,i) = den0*v1;
       phydro->u(IM2,k,j,i) = den0*v2;
       phydro->u(IM3,k,j,i) = den0*v3;
       if (NON_BAROTROPIC_EOS){
-        Real p_over_r = PoverR(den0);
-        //Real press =  ( p_over_r*phydro->u(IDN,k,j,i)>pfloor ) ? p_over_r*phydro->u(IDN,k,j,i) : pfloor;
+        Real p_over_r = PoverR(rad,phi,z);
         phydro->u(IPR,k,j,i) = p_over_r*phydro->u(IDN,k,j,i);
         phydro->u(IEN,k,j,i) = p_over_r*phydro->u(IDN,k,j,i)/(gamma_gas - 1.0);
         phydro->u(IEN,k,j,i) += 0.5*(SQR(phydro->u(IM1,k,j,i))+SQR(phydro->u(IM2,k,j,i))
                                    + SQR(phydro->u(IM3,k,j,i)))/phydro->u(IDN,k,j,i);
-	      }
+	}
     }
-   }
-  }
+  }}
 
   return;
 }
@@ -285,7 +267,7 @@ static Real DenProfileCyl(const Real rad, const Real phi, const Real z)
 {
   Real den;
   Real p_over_r = p0_over_r0;
-  if (NON_BAROTROPIC_EOS) p_over_r = SqSoundSpeed(rad, phi, z);
+  if (NON_BAROTROPIC_EOS) p_over_r = PoverR(rad, phi, z);
   Real denmid = rho0*pow(rad/r0,dslope);
   Real dentem = denmid*exp(gm0/p_over_r*(1./sqrt(SQR(rad)+SQR(rsoft)+SQR(z))-1./sqrt(SQR(rad)+SQR(rsoft))));
   den = dentem;
@@ -295,21 +277,21 @@ static Real DenProfileCyl(const Real rad, const Real phi, const Real z)
 //----------------------------------------------------------------------------------------
 //! \f  computes pressure/density in cylindrical coordinates
 
-static Real PoverR(const Real den0)
+static Real PoverR(const Real rad, const Real phi, const Real z)
 {
   Real poverr;
   // 1) simple power law with index pslope
   //poverr = p0_over_r0*pow(rad/r0, pslope);
   // 2) P/rho = Cs(r,phi,z)^2/gamma
   //          = (h/r)^2*(GM1/r1+GM2/r2)/gamma
-  //Real x1 = rad*cos(phi);
-  //Real x2 = rad*sin(phi);
-  //Real rad1 = sqrt(SQR(x1-x1p)+SQR(x2-x2p)+SQR(z-x3p)+SQR(rsoft));
-  //Real rad2 = sqrt(SQR(x1-x1s)+SQR(x2-x2s)+SQR(z-x3s)+SQR(rsoft));
-  //poverr = p0_over_r0*gm0*(mu/rad1+(1.0-mu)/rad2)/gamma_gas; 
-  
+  Real x1 = rad*cos(phi);
+  Real x2 = rad*sin(phi);
+  Real rad1 = sqrt(SQR(x1-x1p)+SQR(x2-x2p)+SQR(z-x3p)+SQR(rsoft));
+  Real rad2 = sqrt(SQR(x1-x1s)+SQR(x2-x2s)+SQR(z-x3s)+SQR(rsoft));
+  poverr = p0_over_r0*gm0*(mu/rad1+(1.0-mu)/rad2)/gamma_gas;
+
   //insert temperature contribution
-  poverr = TempProfileCyl(den0);
+  //poverr = TempProfileCyl(rad, phi, z);
   return poverr;
 }
 
@@ -317,11 +299,11 @@ static Real PoverR(const Real den0)
 //----------------------------------------------------------------------------------------
 //! \f  computes rotational velocity in cylindrical coordinates
 
-static void VelProfileCyl(const Real den, const Real rad, const Real phi, const Real z,
+static void VelProfileCyl(const Real rad, const Real phi, const Real z,
                           Real &v1, Real &v2, Real &v3, const int flag)
 {
   Real p_over_r = p0_over_r0;
-  if (NON_BAROTROPIC_EOS) p_over_r = PoverR(den);
+  if (NON_BAROTROPIC_EOS) p_over_r = PoverR(rad, phi, z);
   Real rad1 = sqrt(SQR(rad)+SQR(rsoft));
   Real rad2 = sqrt(SQR(rad)+SQR(rsoft)+SQR(z));
   Real qrpl = 0.75*SQR(semia/rad1)*qrat/SQR(1.0+qrat);
@@ -371,62 +353,39 @@ static Real RampFunc(const Real rad, const Real phi, const Real z,
 // [T]=Energy
 //need to fix scale here
 
-static Real TempProfileCyl(const Real den0)
+static Real TempProfileCyl(const Real rad, const Real phi, const Real z)
 {
   Real temp;
   Real AU = 1.495978707e13; //cm
-  Real Mbin = 3.; //M_sol
-  Real semiabin = 50.; //AU
+  Real Mbin = 3.0; //M_sol
+  Real semiabin = 50.0; //AU
+  Real mu = 2.3;
   Real time = sqrt(pow(semiabin*AU,3)/(Mbin*Constants::Msun*Constants::G));
   Real densref = Mbin*Constants::Msun/pow(semiabin*AU,3); //g/cm^3
-  Real T0 = 15.; //K
+  Real T0 = 15.0; //K
 
-  //Real den0 = DenProfileCyl(rad,phi,z)*exp(-pow((rad/rin),-2.0));
-  //den0 = (den0 > dfloor) ?  den0 : dfloor;
-  //Real densphys = den0*densref;
-  Real densphys = (den0 > dfloor) ?  den0*densref : dfloor;
+  Real den0 = DenProfileCyl(rad,phi,z)*exp(-pow((rad/rin),-2.0));
+  den0 = (den0 > dfloor) ?  den0 : dfloor;
 
-  if (densphys<1.e-12){
-    temp = T0+1.5*1.e13*densphys;
-  } else if (1.e-12 <= densphys && densphys < 1.e-11){
-    temp = (T0+15.)*pow(densphys*1.e12, 0.6);
-  } else if (1.e-11 < densphys && densphys <= 3.e-9){
-    temp = pow(10.,0.6)*(T0+15.)*pow(densphys*1.e11, 0.44);
+  if(den0*densref<1.e-12){
+    temp = T0+1.5*1e13*den0*densref;
+  } else if (1.e-12 <= den0*densref < 1.e-11){
+    temp = (T0+15.)*pow(den0*densref*1.e12, 0.6);
+  } else if (1.e-11 < den0*densref <= 3.e-9){
+    temp = pow(10,0.6)*(T0+15.)*pow(den0*densref*1.e11, 0.44);
   }
+  temp *= Constants::kB/(mu*Constants::mH);
 
-  //temp *= 1./my_unit.Temperature * (my_unit.Pressure/my_unit.Density);
-  temp *= Constants::kB/(Constants::mH*2.3);
-  
   //back to code units
 
   temp *= pow(time/(semiabin*AU),2);
-
   return temp;
 }
 
-//----------------------------------------------------------------------------------------
-//! \f  computes initial sound speed in cylindrical coordinates
-
-static Real SqSoundSpeed(const Real rad, const Real phi, const Real z)
-{
-  Real poverr;
-  // 1) simple power law with index pslope
-  //poverr = p0_over_r0*pow(rad/r0, pslope);
-  // 2) P/rho = Cs(r,phi,z)^2/gamma
-  //          = (h/r)^2*(GM1/r1+GM2/r2)/gamma
-  Real x1 = rad*cos(phi);
-  Real x2 = rad*sin(phi);
-  Real rad1 = sqrt(SQR(x1-x1p)+SQR(x2-x2p)+SQR(z-x3p)+SQR(rsoft));
-  Real rad2 = sqrt(SQR(x1-x1s)+SQR(x2-x2s)+SQR(z-x3s)+SQR(rsoft));
-  poverr = p0_over_r0*gm0*(mu/rad1+(1.0-mu)/rad2)/gamma_gas; 
-  
-  //insert temperature contribution
-  //poverr = TempProfileCyl(rad, phi, z);
-  return poverr;
-}
 
 void MeshBlock::UserWorkInLoop(void)
 {
+
   // Clear hist data after previous loop
   if ((ihst1d==1) && (pmy_mesh->time>=hst1d_tstart)) {
     for(int n=0; n<nvar; n++) {
@@ -435,10 +394,6 @@ void MeshBlock::UserWorkInLoop(void)
       for(int i=0; i<ncsd2; i++) ruser_meshblock_data[6](n,i)=0;
     }
   }
-
-  // Clear binary mass hist data after previous loop
-  for(int i=0; i<2;  i++) ruser_meshblock_data[1](i)=0;
-
   // estimate the velocity of the binary needed for calc the hist data
   Real sini = sin(incli);
   Real cosi = cos(incli);
@@ -513,8 +468,6 @@ void MeshBlock::UserWorkInLoop(void)
           Real trm = std::max(dt,tsink*pow(std::min(radp,rads)/rsink, sinkpower));
           // steeper than alpha model
           //Real trm = std::max(dt,tsink*pow(std::min(radp,rads)/rsink, 3.0));
-          //check effect of larger mass removal timescale
-          //trm *= 100;
           u_d -= dt*u_d/trm;
           // apply density floor, without changing momentum or energy
           u_d = (u_d > dfloor) ?  u_d : dfloor;
@@ -529,34 +482,21 @@ void MeshBlock::UserWorkInLoop(void)
           w_vy = u_m2*di;
           w_vz = u_m3*di;
           // store the accretion rate
-          if ((i<=ie && i>=is) && (j<=je && j>=js) && (k<=ke && k>=ks)){
-            Real vol = pcoord->GetCellVolume(k,j,i);
-            Real& accm1 = ruser_meshblock_data[0](0);
-            Real& accm2 = ruser_meshblock_data[0](1);
-            if (radp <= rsink) accm1 += (u_d0-u_d)*vol;
-            else accm2 += (u_d0-u_d)*vol;
-          //if (radp <= rsink) accm1 += (u_d0-u_d)*vol/dt;
-          //else accm2 += (u_d0-u_d)*vol/dt;
-          }
+          //if ((i<=ie && i>=is) && (j<=je && j>=js) && (k<=ke && k>=ks)){
+          //  Real vol = pcoord->GetCellVolume(k,j,i);
+          //  Real& accm1 = ruser_meshblock_data[0](0);
+          //  Real& accm2 = ruser_meshblock_data[0](1);
+          //  if (radp <= rsink) accm1 += (u_d0-u_d)*vol;
+          //  else accm2 += (u_d0-u_d)*vol;
+          //  //if (radp <= rsink) accm1 += (u_d0-u_d)*vol/dt;
+          //  //else accm2 += (u_d0-u_d)*vol/dt;
+          //}
         }
-        
-        //store the binary masses
-        if ((radp <= semia/2)||(rads <= semia/2)) {
-          if ((i<=ie && i>=is) && (j<=je && j>=js) && (k<=ke && k>=ks)){
-            Real vol = pcoord->GetCellVolume(k,j,i);
-            Real& m1 = ruser_meshblock_data[1](0);
-            Real& m2 = ruser_meshblock_data[1](1);
-            if (radp <= semia/2) m1 += u_d*vol;
-            if (rads <= semia/2) m2 += u_d*vol;
-          }
-        }
-       
-
         // apply wave-killing zone within [rbuf1,rbuf2] to quench m=4 mode
         if (rad >= rbuf1) {
           Real v1, v2, v3;
           Real den0 = DenProfileCyl(rad,phi,z);
-          VelProfileCyl(den0,rad,phi,z,v1,v2,v3,0);
+          VelProfileCyl(rad,phi,z,v1,v2,v3,0);
           Real ramp = RampFunc(rad,phi,z,v1,v2,v3);
           u_d  -= dt*(u_d-den0)*ramp;
           u_m1 -= dt*(u_m1-den0*v1)*ramp;
@@ -589,7 +529,7 @@ void MeshBlock::UserWorkInLoop(void)
 
         // apply extremely short cooling
         if (NON_BAROTROPIC_EOS){
-          Real pres0 = u_d*PoverR(u_d);
+          Real pres0 = u_d*PoverR(rad,phi,z);
           w_p = pres0;
           w_p = (w_p > pfloor) ?  w_p : pfloor;
           Real di = 1.0/u_d;
@@ -789,19 +729,17 @@ void Mesh::UserWorkAfterLoop(ParameterInput *pin)
   return;
 }
 
-/*
 void MeshBlock::UserWorkBeforeOutput(ParameterInput *pin)
 {
   for(int k=ks; k<=ke; k++) {
     for(int j=js; j<=je; j++) {
       for(int i=is; i<=ie; i++) {
-        //user_out_var(0,k,j,i) = phydro->w(IPR,k,j,i)/phydro->w(IDN,k,j,i)*my_unit.Temperature;
-        user_out_var(0,k,j,i) = phydro->w(IPR,k,j,i);
+        user_out_var(0,k,j,i) = phydro->w(IPR,k,j,i)/phydro->w(IDN,k,j,i)*my_unit.Temperature;
       }
     }
   }
 }
-*/
+
 
 //----------------------------------------------------------------------------------------
 //!\fn void compute_star_loc(const Real dto, const Real t, const Real e,
@@ -932,7 +870,7 @@ void Cooling(MeshBlock *pmb, const Real time, const Real dt, const AthenaArray<R
         GetCylCoord(pmb->pcoord,rad,phi,z,i,j,k); // convert to cylindrical coordinates
         Real eth = cons(IEN,k,j,i)-0.5*(SQR(cons(IM1,k,j,i))+SQR(cons(IM2,k,j,i))+
                    SQR(cons(IM3,k,j,i)))/cons(IDN,k,j,i);
-        Real eth0 = cons(IDN,k,j,i)*PoverR(cons(IDN,k,j,i))/gam1;
+        Real eth0 = cons(IDN,k,j,i)*PoverR(rad,phi,z)/gam1;
         Real tcool= std::max(beta_th*2.0*PI/sqrt(gm0/SQR(rad)/rad),dt);
         cons(IEN,k,j,i) -= (eth-eth0)*dt/tcool;
       }
@@ -941,26 +879,15 @@ void Cooling(MeshBlock *pmb, const Real time, const Real dt, const AthenaArray<R
   return;
 }
 
-static Real hst_accm(MeshBlock *pmb, int iout)
-{
-        //std::cout <<"gid = "<< pmb->gid << " accm1= " << pmb->accm1 << " accm2= " << pmb->accm2 << std::endl;
-        Real& accm1 = pmb->ruser_meshblock_data[0](0);
-        Real& accm2 = pmb->ruser_meshblock_data[0](1);
-        if (iout == 0) return accm1;
-        else return accm2;
-}
-
-
-static Real hst_m(MeshBlock *pmb, int iout)
-{
-        Real& m1 = pmb->ruser_meshblock_data[1](0);
-        Real& m2 = pmb->ruser_meshblock_data[1](1);
-        if (iout == 2) return m1;
-        else return m2;
-}
+//static Real hst_accm(MeshBlock *pmb, int iout)
+//{
+//  //std::cout <<"gid = "<< pmb->gid << " accm1= " << pmb->accm1 << " accm2= " << pmb->accm2 << std::endl;
+//  if (iout == 0) return pmb->ruser_meshblock_data[0](0);
+//  else return pmb->ruser_meshblock_data[0](1);
+//}
 
 void DiodeInnerX3(MeshBlock *pmb, Coordinates *pco, AthenaArray<Real> &a,
-     FaceField &b, Real time, Real dt, 
+     FaceField &b, Real time, Real dt,
      int il, int iu, int jl, int ju, int kl, int ku, int ngh)
 {
   int is = il + ngh;
@@ -985,7 +912,7 @@ void DiodeInnerX3(MeshBlock *pmb, Coordinates *pco, AthenaArray<Real> &a,
 }
 
 void DiodeOuterX3(MeshBlock *pmb, Coordinates *pco, AthenaArray<Real> &a,
-     FaceField &b, Real time, Real dt, 
+     FaceField &b, Real time, Real dt,
      int il, int iu, int jl, int ju, int kl, int ku, int ngh)
 {
   int is = il + ngh;
