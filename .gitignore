@@ -2,6 +2,7 @@ slurm-*.out
 *.athdf
 *.athdf.xdmf
 *.hst
+*.rst
 core.*
 /CODE_DIR/athena_publ/
 log
@@ -9,6 +10,7 @@ log
 *.png
 *.vtk
 *.mp4
+*.pyc
 
 #C++ standard
 # Prerequisites

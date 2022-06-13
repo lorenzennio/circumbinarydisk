@@ -8,7 +8,7 @@
 #the type of notes that you are submitting to
 #SBATCH -p ccas128
 
-path=outputSMR2Dacc_trm
+path=outputSMR2Diso
 
 srun athena -i athinput.binary2D -m 1 $path > $path/log
 srun athena -i athinput.binary2D -d $path > $path/log

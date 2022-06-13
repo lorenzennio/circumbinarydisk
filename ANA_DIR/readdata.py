@@ -3,6 +3,7 @@ import h5py
 import numpy as np
 import scipy as sp
 import matplotlib.pyplot as plt
+import matplotlib
 import units as un
 from astropy import constants as const
 from skimage.measure import block_reduce
@@ -50,7 +51,10 @@ class load:
             raise ValueError('Can only process 2d or 3d.')
 
         #compute temperature
-        self.temp = self.press/self.u.presref / (self.rho/self.u.densref) * self.u.tempref
+        try:
+            self.temp = self.press/self.u.presref / (self.rho/self.u.densref) * self.u.tempref
+        except:
+            pass
         
         #compute velocity magnitude
         self.v = np.sqrt(self.v1**2 + self.v2**2 + self.v2**2)
@@ -77,13 +81,19 @@ class load:
 
             
             rho = all_data_level_1_prim["rho"].in_units("g/cm**3").to_ndarray()
-            press = all_data_level_1_prim["press"].in_units("g/(cm*s**2)").to_ndarray()
+            try:
+                press = all_data_level_1_prim["press"].in_units("g/(cm*s**2)").to_ndarray()
+            except:
+                pass
             v1 = all_data_level_1_prim["vel1"].in_units("km/s").to_ndarray()
             v2 = all_data_level_1_prim["vel2"].in_units("km/s").to_ndarray()
             v3 = all_data_level_1_prim["vel3"].in_units("km/s").to_ndarray()
             
             self.rho.append(rho)
-            self.press.append(press)
+            try:
+                self.press.append(press)
+            except:
+                pass
             self.v1.append(v1)
             self.v2.append(v2)
             self.v3.append(v3) 
@@ -96,7 +106,10 @@ class load:
         function to convert to numpy arrays
         """
         self.rho = np.array(self.rho)
-        self.press = np.array(self.press)
+        try:
+            self.press = np.array(self.press)
+        except:
+            pass
         self.v1 = np.array(self.v1)
         self.v2 = np.array(self.v2)
         self.v3 = np.array(self.v3)
@@ -106,7 +119,10 @@ class load:
         function to remove the outer refinement levels form the read data
         """
         self.rho = self.rho[:,:,:,0]
-        self.press = self.press[:,:,:,0]
+        try:
+            self.press = self.press[:,:,:,0]
+        except:
+            pass
         self.v1 = self.v1[:,:,:,0]
         self.v2 = self.v2[:,:,:,0]
         self.v3 = self.v3[:,:,:,0]
@@ -158,21 +174,31 @@ class plot:
     """
     
     
-    def plot(self, data, path, low, hig, frame, lab, lim):
+    def plot(self, data, path, low, hig, frame, lab, lim, log=False):
         cmap="plasma"
+        fs = 16
         
         fig = plt.figure(figsize=(10,10))
         ax = fig.add_subplot(111)
+        if log:
+            pos = ax.imshow(data, cmap=cmap, origin='lower', extent=[-frame,frame,-frame,frame], norm=matplotlib.colors.LogNorm(vmin=low, vmax=hig))
+        else:
+            pos = ax.imshow(data, cmap=cmap, origin='lower', vmin=low, vmax=hig, extent=[-frame,frame,-frame,frame])
         
-        pos = ax.imshow(data, cmap=cmap, vmin=low, vmax=hig, origin='lower', extent=[-frame,frame,-frame,frame])
-        fig.colorbar(pos, ax=ax, label=lab)
-
+        cbar = fig.colorbar(pos, ax=ax)
+        
+        cbar.ax.tick_params(labelsize=fs)
+        cbar.set_label(lab, size=fs)
+        
         ax.set_aspect('equal', 'box')
-        ax.set_xlabel("$x_0~[AU]$")
-        ax.set_ylabel("$x_1~[AU]$")
+        ax.set_xlabel("$x_0~[AU]$", fontsize=fs)
+        ax.set_ylabel("$x_1~[AU]$", fontsize=fs)
         ax.set_xlim(-lim, lim)
         ax.set_ylim(-lim, lim)
-
+        
+        for label in (ax.get_xticklabels() + ax.get_yticklabels()):
+            label.set_fontsize(fs)
+        
         plt.savefig(path)
         plt.close()
         
@@ -240,7 +266,7 @@ class data2d(load, plot):
         self.vr   = self.v1*np.cos(self.phi) + self.v2*np.sin(self.phi)
         self.vphi = -self.v1*np.sin(self.phi) + self.v2*np.cos(self.phi)
     
-    def draw(self, simdata, fname, lab="", scale = 1., low=None, hig=None):
+    def draw(self, simdata, fname, lab="", scale = 1., low=None, hig=None, log=False):
         frame = self.u.abin * 10.
         lim = frame*scale
         for filename, data in zip(self.prim_files, simdata):
@@ -255,7 +281,7 @@ class data2d(load, plot):
             else:
                 hi = hig
             
-            self.plot(data, path, lo, hi, frame, lab, lim)
+            self.plot(data, path, lo, hi, frame, lab, lim, log)
             
             print("Drew - " + filename)
             
@@ -328,7 +354,7 @@ class data3d(load, plot):
             fig.write_image(path)
             print("Drew 3d: " + filename)
         
-    def column(self, simdata, function, fname, lab="", scale = 1., low=None, hig=None):
+    def column(self, simdata, function, fname, lab="", scale = 1., low=None, hig=None, log=False):
         """
         function to plot the top view colums of the data
         """
@@ -339,7 +365,7 @@ class data3d(load, plot):
             path = os.path.join(os.getcwd(), 'plots/column/'+ filename.replace(".athdf", fname))
             
             zcolumn = np.shape(data)[-1]
-            column = np.log(block_reduce(data, block_size=(1, 1, zcolumn), func=function)[:,:,0])
+            column = block_reduce(data, block_size=(1, 1, zcolumn), func=function)[:,:,0]
             
             if not low:
                 lo = np.min(column)
@@ -350,7 +376,7 @@ class data3d(load, plot):
             else:
                 hi = hig
             
-            self.plot(column, path, lo, hi, frame, lab, lim)
+            self.plot(column, path, lo, hi, frame, lab, lim, log)
             
             print("Drew " + filename)
             
@@ -358,6 +384,7 @@ class data3d(load, plot):
 
 def masses(dens, rmin=0, rmax=np.inf):
     """
+    DEPRECATED - use simulation output instead!!!
     compute masses within radius for 2d simulations
     """
     masses = np.array([])
