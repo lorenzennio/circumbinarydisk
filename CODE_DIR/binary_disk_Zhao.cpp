@@ -514,7 +514,7 @@ void MeshBlock::UserWorkInLoop(void)
           // steeper than alpha model
           //Real trm = std::max(dt,tsink*pow(std::min(radp,rads)/rsink, 3.0));
           //check effect of larger mass removal timescale
-          //trm *= 100;
+          trm *= 100;
           u_d -= dt*u_d/trm;
           // apply density floor, without changing momentum or energy
           u_d = (u_d > dfloor) ?  u_d : dfloor;
